@@ -13,6 +13,8 @@ import (
 	"go-gin-starter/pkg/logf"
 	"go-gin-starter/pkg/util"
 	"go-gin-starter/routers/api/v1/user"
+	"go-gin-starter/routers/api/v1/wechat"
+	"go-gin-starter/routers/api/v1/weibo"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -38,6 +40,12 @@ func InitRouter() *gin.Engine {
 		userV1.GET("/get", user.GetUser)
 		userV1.POST("/delete", user.DeleteUser)
 		userV1.POST("/update", user.UpdateUser)
+	}
+
+	generalV1 := apiV1.Group("/general")
+	{
+		generalV1.GET("/code", wechat.GetSessionKey)
+		generalV1.GET("/weibo/list", weibo.GetWeiboHotData)
 	}
 
 	return r

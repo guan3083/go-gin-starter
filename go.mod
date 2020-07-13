@@ -4,6 +4,8 @@ go 1.14
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/antchfx/xpath v1.1.9 // indirect
+	github.com/antchfx/xquery v0.0.0-20180515051857-ad5b8c7a47b0
 	github.com/casbin/casbin v1.9.1
 	github.com/casbin/gorm-adapter v1.0.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible

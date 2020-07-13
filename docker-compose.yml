@@ -2,30 +2,30 @@ version: '3'
 services:
   compose_mysql:
     image: mysql:5.7
-    container_name: mysql_test
+    container_name: compose_mysql
     ports:
     - 3308:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: go-gin-starter
     volumes:
-      - "/Users/git/Desktop/work-space/docker-test/mysql_test/data:/var/lib/mysql"           # 挂载数据目录
-      - "/Users/git/Desktop/work-space/docker-test/mysql_test/config:/etc/mysql/conf.d"      # 挂载配置文件目录
+      - /opt/docker/mysql_test/data:/var/lib/mysql           # 挂载数据目录
+      - /opt/docker/mysql_test/config:/etc/mysql/conf.d      # 挂载配置文件目录
   compose_redis:
-    image: redis
-    container_name: redis_test
+    image: redis:latest
+    container_name: compose_redis
     ports:
     - 6381:6379
     volumes:
-      - /Users/git/Desktop/work-space/docker-test/redis_test/conf:/usr/local/etc/redis
-      - /Users/git/Desktop/work-space/docker-test/redis_test/data:/data
+      - /opt/docker/redis_test/conf:/usr/local/etc/redis
+      - /opt/docker/redis_test/data:/data
     command:
       redis-server
   go-gin-server_test:
     build: ./
     image: compose_go-server:v1
     ports:
-      - 7001:8000
+      - 80:8000
     container_name: go-gin-server_test
 
 networks:

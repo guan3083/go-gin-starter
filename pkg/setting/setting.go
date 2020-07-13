@@ -25,6 +25,8 @@ type App struct {
 	LogSaveName     string
 	LogFileExt      string
 	TimeFormat      string
+	WeiboIndex      string
+	WeiboSearch     string
 }
 
 var AppSetting = &App{}

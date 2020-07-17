@@ -1,6 +1,7 @@
 package user
 
 import (
+	"encoding/base64"
 	"github.com/gin-gonic/gin"
 	"go-gin-starter/pkg/app"
 	"go-gin-starter/pkg/e"
@@ -29,6 +30,7 @@ func Login(c *gin.Context) {
 		app.ErrorResp(c, e.INVALID_PARAMS, err.Error())
 		return
 	}
+	password, _ := base64.StdEncoding.DecodeString(form.Password)
 	userServer := user_service.User{}
 	user, err := userServer.GetByUserName(form.UserName)
 	if err != nil {
@@ -40,7 +42,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	salt := util.GetMd5String(form.UserName)
-	md5Equals := util.MD5Equals(form.Password, salt, user.Password)
+	md5Equals := util.MD5Equals(string(password), salt, user.Password)
 	if !md5Equals {
 		app.ErrorResp(c, e.ERROR, "密码错误")
 		return
@@ -164,6 +166,30 @@ func GetUser(c *gin.Context) {
 	app.SuccessResp(c, user)
 }
 
+// @Summary 获取当前用户信息
+// @Description 获取用户信息
+// @Tags 用户
+// @accept json
+// @Produce  json
+// @Success 200 {object}  app.Response
+// @Failure 500 {object}  app.Response
+// @Router /api/v1/user/info  [get]
+// @Security Token
+func GetUserInfo(c *gin.Context) {
+	claims, err := util.ParseToken(c.GetHeader(util.HeaderToken))
+	if err != nil {
+		app.ErrorResp(c, e.ERROR, err.Error())
+		return
+	}
+	userServer := user_service.User{}
+	user, err := userServer.GetByUserName(claims.Username)
+	if err != nil {
+		app.ErrorResp(c, e.ERROR, err.Error())
+		return
+	}
+	app.SuccessResp(c, user)
+}
+
 // @Summary 修改用户
 // @Description 修改用户信息
 // @Tags 用户
@@ -226,5 +252,18 @@ func DeleteUser(c *gin.Context) {
 		app.ErrorResp(c, e.ERROR, err.Error())
 		return
 	}
+	app.SuccessResp(c, nil)
+}
+
+// @Summary 登出
+// @Description 登出
+// @Tags 用户
+// @accept json
+// @Produce  json
+// @Success 200 {object}  app.Response
+// @Failure 500 {object}  app.Response
+// @Router /api/v1/user/logout  [post]
+// @Security Token
+func Logout(c *gin.Context) {
 	app.SuccessResp(c, nil)
 }

@@ -1,32 +1,32 @@
 version: '3'
 services:
-  compose_mysql:
+  quick_mysql:
     image: mysql:5.7
-    container_name: compose_mysql
+    container_name: quick_mysql
     ports:
     - 3308:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: go-gin-starter
     volumes:
-      - /opt/docker/mysql_test/data:/var/lib/mysql           # 挂载数据目录
-      - /opt/docker/mysql_test/config:/etc/mysql/conf.d      # 挂载配置文件目录
-  compose_redis:
+      - /opt/docker/mysql_data/data:/var/lib/mysql           # 挂载数据目录
+      - /opt/docker/mysql_data/config:/etc/mysql/conf.d      # 挂载配置文件目录
+  quick_redis:
     image: redis:latest
-    container_name: compose_redis
+    container_name: quick_redis
     ports:
     - 6381:6379
     volumes:
-      - /opt/docker/redis_test/conf:/usr/local/etc/redis
-      - /opt/docker/redis_test/data:/data
+      - /opt/docker/redis_data/conf:/usr/local/etc/redis
+      - /opt/docker/redis_data/data:/data
     command:
       redis-server
-  go-gin-server_test:
+  go-gin-server:
     build: ./
-    image: compose_go-server:v1
+    image: go-gin-server:v3
     ports:
-      - 80:8000
-    container_name: go-gin-server_test
+      - 7001:7000
+    container_name: go-gin-server
 
 networks:
   default:

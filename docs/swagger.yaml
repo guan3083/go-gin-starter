@@ -32,6 +32,16 @@ definitions:
     - password
     - user_name
     type: object
+  request.ReqCrawler:
+    properties:
+      type:
+        type: string
+      uri:
+        type: string
+    required:
+    - type
+    - uri
+    type: object
   request.ReqLoginForm:
     properties:
       password:
@@ -84,6 +94,32 @@ info:
   title: Golang Gin API
   version: "1.0"
 paths:
+  /api/v1/article/crawler:
+    post:
+      consumes:
+      - application/json
+      description: 文章爬取
+      parameters:
+      - description: reqBody
+        in: body
+        name: form
+        required: true
+        schema:
+          $ref: '#/definitions/request.ReqCrawler'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 文章爬取
+      tags:
+      - 文章
   /api/v1/general/weibo/list:
     get:
       consumes:
@@ -155,6 +191,25 @@ paths:
       summary: 注册
       tags:
       - 用户
+  /api/v1/system/initScript:
+    get:
+      consumes:
+      - application/json
+      description: 初始化数据库
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 初始化数据库
+      tags:
+      - 系统设置
   /api/v1/user/delete:
     post:
       consumes:
@@ -210,6 +265,27 @@ paths:
       summary: 获取单个用户信息
       tags:
       - 用户
+  /api/v1/user/info:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - Token: []
+      summary: 获取当前用户信息
+      tags:
+      - 用户
   /api/v1/user/list:
     get:
       consumes:
@@ -238,6 +314,27 @@ paths:
       security:
       - Token: []
       summary: 获取用户信息
+      tags:
+      - 用户
+  /api/v1/user/logout:
+    post:
+      consumes:
+      - application/json
+      description: 登出
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      security:
+      - Token: []
+      summary: 登出
       tags:
       - 用户
   /api/v1/user/update:

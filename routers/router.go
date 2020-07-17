@@ -12,6 +12,8 @@ import (
 	"go-gin-starter/pkg/app"
 	"go-gin-starter/pkg/logf"
 	"go-gin-starter/pkg/util"
+	"go-gin-starter/routers/api/v1/article"
+	"go-gin-starter/routers/api/v1/system"
 	"go-gin-starter/routers/api/v1/user"
 	"go-gin-starter/routers/api/v1/wechat"
 	"go-gin-starter/routers/api/v1/weibo"
@@ -40,12 +42,22 @@ func InitRouter() *gin.Engine {
 		userV1.GET("/get", user.GetUser)
 		userV1.POST("/delete", user.DeleteUser)
 		userV1.POST("/update", user.UpdateUser)
+		userV1.GET("/info", user.GetUserInfo)
+		userV1.POST("/logout", user.Logout)
 	}
 
 	generalV1 := apiV1.Group("/general")
 	{
 		generalV1.GET("/code", wechat.GetSessionKey)
 		generalV1.GET("/weibo/list", weibo.GetWeiboHotData)
+	}
+	articleV1 := apiV1.Group("/article")
+	{
+		articleV1.POST("/crawler", article.Crawler)
+	}
+	systemV1 := apiV1.Group("/system")
+	{
+		systemV1.GET("/initScript", system.InitSqlScript)
 	}
 
 	return r

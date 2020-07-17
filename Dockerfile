@@ -13,6 +13,7 @@ WORKDIR /app
 RUN mkdir conf
 COPY --from=build-stage /app/quickpass .
 COPY --from=build-stage /app/conf/* /app/conf/
+COPY --from=build-stage /app/script/* /app/script/
 RUN rm /app/conf/app.ini && mv /app/conf/app_release.ini /app/conf/app.ini
 EXPOSE 8000
 CMD ["./quickpass"]

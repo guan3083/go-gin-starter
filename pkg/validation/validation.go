@@ -11,6 +11,9 @@ import (
 	"time"
 )
 
+// 自定义验证规则
+// https://studygolang.com/articles/29740?fr=sidebar
+
 var v *validator.Validate
 var trans ut.Translator
 

@@ -2,6 +2,8 @@ package user_service
 
 import (
 	"go-gin-starter/models"
+	"go-gin-starter/pkg/e"
+	"go-gin-starter/pkg/errors"
 	"go-gin-starter/pkg/util"
 )
 
@@ -72,7 +74,14 @@ func (a *User) Count() (int64, error) {
 	return models.NewUserModel(session).GetUserTotal(a.getMaps())
 }
 
-func (a *User) AddUser() error {
+func (a *User) AddUser() (code int, err error) {
+	name, err := a.GetByUserName(a.UserName)
+	if err != nil {
+		return e.ERROR, err
+	}
+	if name != nil {
+		return e.BUSINESS_ERROR, errors.New("账户名重复")
+	}
 	session := models.NewSession()
 	user := &models.User{
 		UserName:    a.UserName,
@@ -83,12 +92,8 @@ func (a *User) AddUser() error {
 		Address:     a.Address,
 		Status:      userStatusNormal,
 	}
-	err := models.NewUserModel(session).AddUser(user)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	err = models.NewUserModel(session).AddUser(user)
+	return e.ERROR, err
 }
 
 func (a *User) UpdateUser() error {

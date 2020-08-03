@@ -86,12 +86,18 @@ func RegisterUser(c *gin.Context) {
 		PhoneNumber: form.PhoneNumber,
 		Address:     form.Address,
 	}
-	err = userServer.AddUser()
+	code, err := userServer.AddUser()
+	if err != nil {
+		app.ErrorResp(c, code, err.Error())
+		return
+	}
+	// 2、token生成
+	token, err := util.GenerateToken(form.UserName, form.NickName)
 	if err != nil {
 		app.ErrorResp(c, e.ERROR, err.Error())
 		return
 	}
-	app.SuccessResp(c, nil)
+	app.SuccessResp(c, token)
 }
 
 // @Summary 获取用户信息

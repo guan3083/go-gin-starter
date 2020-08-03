@@ -2,6 +2,7 @@ package util
 
 import (
 	"go-gin-starter/pkg/setting"
+	"go-gin-starter/request"
 )
 
 func GetPaginationParams(startPage int, pageSize int) (int, int) {
@@ -9,6 +10,13 @@ func GetPaginationParams(startPage int, pageSize int) (int, int) {
 	offset := defaultOffsetPagination(startPage, limit, 0)
 
 	return offset, limit
+}
+
+func GetPaginationByCommon(page request.ReqCommonPage) request.ReqCommonPage {
+	limit := defaultLimitPagination(page.PageSize, setting.AppSetting.PageSize)
+	offset := defaultOffsetPagination(page.PageNo, limit, 0)
+
+	return request.ReqCommonPage{PageNo: offset, PageSize: limit}
 }
 
 func defaultOffsetPagination(startPage int, limit int, defaultValue int) int {

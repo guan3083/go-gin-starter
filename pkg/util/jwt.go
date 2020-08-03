@@ -2,6 +2,7 @@ package util
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"go-gin-starter/pkg/e"
 	"go-gin-starter/pkg/setting"
 	"log"
 	"time"
@@ -52,4 +53,22 @@ func ParseToken(token string) (*Claims, error) {
 	}
 
 	return nil, err
+}
+
+func CheckTokenString(token string) (*Claims, int) {
+	if token == "" {
+		return nil, e.ERROR_AUTH
+	}
+
+	claims, err := ParseToken(token)
+	if err != nil {
+		switch err.(*jwt.ValidationError).Errors {
+		case jwt.ValidationErrorExpired:
+			return nil, e.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
+		default:
+			return nil, e.ERROR_AUTH_CHECK_TOKEN_FAIL
+		}
+	}
+
+	return claims, e.SUCCESS
 }

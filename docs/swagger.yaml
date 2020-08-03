@@ -120,6 +120,62 @@ paths:
       summary: 文章爬取
       tags:
       - 文章
+  /api/v1/article/list:
+    get:
+      consumes:
+      - application/json
+      description: 文章查询
+      parameters:
+      - description: 当前页面
+        in: query
+        name: page
+        type: integer
+      - description: 页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 文章列表
+      tags:
+      - 文章
+  /api/v1/article/weibo:
+    get:
+      consumes:
+      - application/json
+      description: 文章查询
+      parameters:
+      - description: 当前页面
+        in: query
+        name: page
+        type: integer
+      - description: 页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 文章列表
+      tags:
+      - 文章
   /api/v1/general/weibo/list:
     get:
       consumes:
@@ -365,6 +421,34 @@ paths:
       summary: 修改用户
       tags:
       - 用户
+  /api/v1/ws/send:
+    get:
+      consumes:
+      - application/json
+      description: 发送消息
+      parameters:
+      - description: 当前页面
+        in: query
+        name: page
+        type: integer
+      - description: 页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 发送消息
+      tags:
+      - websocket Test
 securityDefinitions:
   Token:
     in: header

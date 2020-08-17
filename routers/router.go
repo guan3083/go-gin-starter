@@ -13,6 +13,8 @@ import (
 	"go-gin-starter/pkg/logf"
 	"go-gin-starter/pkg/util"
 	"go-gin-starter/routers/api/v1/article"
+	"go-gin-starter/routers/api/v1/block"
+	"go-gin-starter/routers/api/v1/shoes"
 	"go-gin-starter/routers/api/v1/system"
 	"go-gin-starter/routers/api/v1/user"
 	"go-gin-starter/routers/api/v1/websocket"
@@ -57,6 +59,15 @@ func InitRouter() *gin.Engine {
 		articleV1.POST("/crawler", article.Crawler)
 		articleV1.GET("/list", article.GetAll)
 		articleV1.GET("/weibo", article.GetWeiboAll)
+	}
+	shoesV1 := apiV1.Group("/shoes")
+	{
+		shoesV1.GET("/list", shoes.GetShoesList)
+	}
+	blockV1 := apiV1.Group("/block")
+	{
+		blockV1.GET("/list", block.GetBlockList)
+		blockV1.POST("/generate", block.GenerateBlock)
 	}
 	systemV1 := apiV1.Group("/system")
 	{

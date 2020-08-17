@@ -11,6 +11,11 @@ definitions:
       msg:
         type: string
     type: object
+  block.ReqGenerateBlock:
+    properties:
+      bpm:
+        type: integer
+    type: object
   request.ReqAddUserForm:
     properties:
       address:
@@ -176,6 +181,49 @@ paths:
       summary: 文章列表
       tags:
       - 文章
+  /api/v1/block/generate:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: reqBody
+        in: body
+        name: form
+        required: true
+        schema:
+          $ref: '#/definitions/block.ReqGenerateBlock'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: block
+      tags:
+      - block
+  /api/v1/block/list:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: block
+      tags:
+      - block
   /api/v1/general/weibo/list:
     get:
       consumes:
@@ -247,6 +295,33 @@ paths:
       summary: 注册
       tags:
       - 用户
+  /api/v1/shoes/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 当前页面
+        in: query
+        name: page
+        type: integer
+      - description: 页数量
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: shoes信息
+      tags:
+      - shoes
   /api/v1/system/initScript:
     get:
       consumes:

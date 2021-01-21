@@ -14,5 +14,11 @@ RUN mkdir conf
 COPY --from=build-stage /app/quickpass .
 COPY --from=build-stage /app/conf/* /app/conf/
 RUN rm /app/conf/app.ini && mv /app/conf/app_release.ini /app/conf/app.ini
+RUN echo 'http://mirrors.ustc.edu.cn/alpine/v3.5/main' > /etc/apk/repositories \
+    && echo 'http://mirrors.ustc.edu.cn/alpine/v3.5/community' >>/etc/apk/repositories \
+    && apk update \
+    && apk add tzdata \
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone
 EXPOSE 8000
 CMD ["./quickpass"]
